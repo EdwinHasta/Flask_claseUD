@@ -15,6 +15,9 @@ El equipo utilizado tiene instalado OpenSuse Leap 15.4 con python 3.6.15
 ``. venv/bin/activate `` <br/>
 ``python3 -m pip install --upgrade pip `` <br/>
 ``pip install flask `` <br/>
+``pip install sqlalchemy `` <br/>
+``# pip install cx_Oracle `` <br/>
+``pip install oracledb `` <br/>
 ``mkdir home `` <br/>
 ``cd home `` <br/>
 ``vi main.py `` <br/>
@@ -23,8 +26,10 @@ El equipo utilizado tiene instalado OpenSuse Leap 15.4 con python 3.6.15
 ``vi index.html ``<br/>
 
 ### Ejecución del proyecto 
+. venv/bin/activate
 
 ``export FLASK_APP=main.py `` <br/>
+``cd home `` <br/>
 ``flask run `` <br/>
 
 ### Rutas a probar 
