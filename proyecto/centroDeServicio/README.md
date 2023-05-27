@@ -6,7 +6,7 @@
 ![Captura de la página principal!](screenshot_index.png "Centro de servicio")
 
 ## Description
-El proyecto utiliza como base un proyecto estándar en Flask modificando la plantilla en Bootstrap disponible en <a target="_blank" href="https://startbootstrap.com/theme/sb-admin-2">SB Admin 2</a>. Para el almacenamiento de datos se hace uso de una conexión a una base de datos Oracle. Tal conexión se establece utilizando python-oracledb. 
+Centro de servicio es un proyecto académico que utiliza como base un proyecto estándar en Flask modificando la plantilla en Bootstrap disponible en <a target="_blank" href="https://startbootstrap.com/theme/sb-admin-2">SB Admin 2</a>. Para el almacenamiento de datos se hace uso de una conexión a una base de datos Oracle. Tal conexión se establece utilizando python-oracledb. 
 
 ## Comandos utilizados durante la creación del proyecto
 
@@ -38,7 +38,7 @@ El equipo utilizado tiene instalado OpenSuse Leap 15.4 con python 3.8.16
 ``vi index.html ``<br/>
 
 ### Ejecución del proyecto 
-. venv/bin/activate
+``. venv/bin/activate `` <br/>
 ``export PYTHON_USERNAME=SPT `` <br/>
 ``export PYTHON_PASSWORD=SPT `` <br/>
 ``export PYTHON_CONNECTSTRING="192.168.3.47/C02DB01" `` <br/>
