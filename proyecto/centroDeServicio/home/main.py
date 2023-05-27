@@ -1,6 +1,6 @@
 import os
 import oracledb
-from flask import Flask, request, render_template, url_for
+from flask import Flask, request, render_template, url_for, redirect, abort
 from sqlalchemy import create_engine
 from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, Identity, create_engine, select, join
 from sqlalchemy.pool import NullPool
@@ -25,6 +25,8 @@ pool = oracledb.create_pool(user=un, password=pw,
 engine = create_engine("oracle+oracledb://", creator=pool.acquire, poolclass=NullPool)
 
 Base = declarative_base()
+
+accesoSesion = 0
 
 class ClasificacionesCasos(Base):
     __tablename__ = 'CLASIFICACIONESCASOS'
@@ -70,7 +72,7 @@ def consultarCaso(session):
     return resultado
 
 def consultarUsuario(session): 
-    sql = text("SELECT NOMBRES||' '||PRIMERAPELLIDO||' '||SEGUNDOAPELLIDO FROM SPTEMPLEADOSOPORTES WHERE NUMERODOCUMENTO = 38")
+    sql = text("SELECT NOMBRES||' '||PRIMERAPELLIDO||' '||SEGUNDOAPELLIDO FROM SPTEMPLEADOSOPORTES WHERE NUMERODOCUMENTO =38 ")
     resultado = session.execute(sql).fetchone()
     return resultado
 
@@ -96,46 +98,90 @@ def consultarCasosPausados(session):
     resultado = session.execute(sql).fetchone()
     return resultado
 
+def cargarDatos(): 
+    if accesoSesion == 1: 
+        #return render_template("login.html")
+        return redirect(url_for("login.html"))
+    else:
+        #Session = sessionmaker(bind=engine)
+        #session = Session()
+        #controlSoporte_todos = consultarCaso(session)
+        #session.commit()
+        #print(controlSoporte_todos)
+        
+        Session = sessionmaker(bind=engine)
+        session = Session()
+        nombreUsuario = consultarUsuario(session)
+        session.commit()
+        print(nombreUsuario)
+        
+        Session = sessionmaker(bind=engine)
+        session = Session()
+        conteoCasos = consultarCantidadCasos(session)
+        session.commit()
+        print(conteoCasos)
+        
+        Session = sessionmaker(bind=engine)
+        session = Session()
+        conteoCasosPropios = consultarCantidadCasosPropios(session)
+        session.commit()
+        print(conteoCasosPropios)
+        
+        Session = sessionmaker(bind=engine)
+        session = Session()
+        porcentajeAvance = consultarPorcentajeAvance(session)
+        session.commit()
+        print(porcentajeAvance)
+        
+        Session = sessionmaker(bind=engine)
+        session = Session()
+        casosPausados = consultarCasosPausados(session)
+        session.commit()
+        print(casosPausados)
+        
+        return render_template("index.html",nombreusuario=nombreUsuario, conteocasos=conteoCasos, casospropios=conteoCasosPropios, porcentajeavance=porcentajeAvance, casospausados=casosPausados)
+
 @app.route("/")
 def index():
-    #Session = sessionmaker(bind=engine)
-    #session = Session()
-    #controlSoporte_todos = consultarCaso(session)
-    #session.commit()
-    #print(controlSoporte_todos)
+    return cargarDatos()
 
-    Session = sessionmaker(bind=engine)
-    session = Session()
-    nombreUsuario = consultarUsuario(session)
-    session.commit()
-    print(nombreUsuario)
+@app.route("/index.html")
+def aplicacion():
+    return cargarDatos()
 
-    Session = sessionmaker(bind=engine)
-    session = Session()
-    conteoCasos = consultarCantidadCasos(session)
-    session.commit()
-    print(conteoCasos)
-    
-    Session = sessionmaker(bind=engine)
-    session = Session()
-    conteoCasosPropios = consultarCantidadCasosPropios(session)
-    session.commit()
-    print(conteoCasosPropios)
+@app.route("/login", methods = ["GET", "POST"])
+def ingreso():
+    if request.method == "POST":
+        if (request.form["email"] and request.form["password"]):
+            accesoSesion = 1
+            # return "You are logged in"
+            return cargarDatos()
+        return "Your credentials are invalid, check and"
+    print("No hay datos")    
 
-    Session = sessionmaker(bind=engine)
-    session = Session()
-    porcentajeAvance = consultarPorcentajeAvance(session)
-    session.commit()
-    print(porcentajeAvance)
+@app.route("/blank.html")
+def centroDeServicio():
+    return render_template('blank.html')
 
-    Session = sessionmaker(bind=engine)
-    session = Session()
-    casosPausados = consultarCasosPausados(session)
-    session.commit()
-    print(casosPausados)
+@app.route("/forgot-password.html")
+def olvidoContrasena():
+    return render_template('forgot-password.html')
 
-    return render_template('index.html',nombreusuario=nombreUsuario, conteocasos=conteoCasos, casospropios=conteoCasosPropios, porcentajeavance=porcentajeAvance, casospausados=casosPausados)
+@app.route("/register.html")
+def registrarUsuario():
+    return render_template('register.html')
 
+@app.route("/crearcaso.html")
+def crearCaso():
+    return render_template('crearcaso.html')
+
+@app.route("/acercade.html")
+def acercaDe():
+    return render_template('acercade.html')
+
+@app.errorhandler(404)
+def page_not_found(error):
+    return render_template('404.html'), 404
 
 if __name__ == "__main__":
     app.run(debug=True)

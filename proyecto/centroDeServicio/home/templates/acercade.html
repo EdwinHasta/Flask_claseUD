@@ -1,0 +1,44 @@
+{% extends "base.html"%}
+{%block title%}
+Centro de servicios
+{%endblock%}
+{%block content %}
+                <!-- Begin Page Content -->
+                <div class="container-fluid">
+
+                    <!-- Page Heading -->
+                    <h1 class="h3 mb-4 text-gray-800">Acerca de</h1>
+                    <p class="mb-4">Centro de servicio es un proyecto de ejemplo aplicando lo aprendido en el curso de Flask.</p>
+                    <div class="row">
+                        <div class="col-lg-6">
+
+                            <!-- Default Card Example -->
+                            <div class="card shadow mb-4">
+                                <div class="card-header py-3">
+                                    <h6 class="m-0 font-weight-bold text-primary">Desarrollador</h6>
+                                </div>
+                                <div class="card-body">
+                                    Mi nombre es Edwin Hastamorir, soy estudiante de Ingeniería de Sistemas. 
+                                </div>
+                            </div>
+
+                            <!-- Basic Card Example -->
+                            <div class="card shadow mb-4">
+                                <div class="card-header py-3">
+                                    <h6 class="m-0 font-weight-bold text-primary">Recursos</h6>
+                                </div>
+                                <div class="card-body">
+                                    El proyecto utiliza como base un proyecto estándar en Flask modificando 
+                                    la plantilla en Bootstrap disponible en 
+                                    <a target="_blank" href="https://startbootstrap.com/theme/sb-admin-2">SB Admin 2</a>. <br/>
+                                    Para el almacenamiento de datos se hace uso de una conexión a una base de datos Oracle. 
+                                    Tal conexión se establece utilizando python-oracledb. 
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+                <!-- /.container-fluid -->
+{% endblock%}

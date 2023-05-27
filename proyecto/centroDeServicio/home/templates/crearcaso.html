@@ -1,0 +1,82 @@
+{% extends "base.html"%}
+{%block title%}
+Centro de servicios
+{%endblock%}
+{%block content %}
+<!-- Begin Page Content -->
+<div class="container-fluid">
+
+    <!-- Page Heading -->
+    <h1 class="h3 mb-4 text-gray-800">Caso nuevo</h1>
+
+    <div class="row">
+
+        <div class="col-lg-6">
+
+            <!-- Circle Buttons -->
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Datos para el caso nuevo</h6>
+                </div>
+                <div class="card-body">
+                    <p>Por favor seleccione o ingrese los valores requeridos para crear un caso</p>
+                    <!-- Circle Buttons (Default) -->
+                    <form class="casonuevo">
+                        <div class="input-group">
+                            <input type="text" name="cliente" class="form-control bg-light border-0 small" placeholder="Cliente ..."
+                                aria-label="cliente" aria-describedby="basic-addon2">
+                            <div class="input-group-append">
+                                <button class="btn btn-primary" type="button">
+                                    <i class="fas fa-search fa-sm"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="input-group">
+                            <input type="text" name="contacto" class="form-control bg-light border-0 small" placeholder="Contacto ..."
+                                aria-label="contacto" aria-describedby="basic-addon2">
+                            <div class="input-group-append">
+                                <button class="btn btn-primary" type="button">
+                                    <i class="fas fa-search fa-sm"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="input-group">
+                            <input type="text" name="clasificacion" class="form-control bg-light border-0 small" placeholder="Clasificacion ..."
+                                aria-label="clasificacion" aria-describedby="basic-addon2">
+                            <div class="input-group-append">
+                                <button class="btn btn-primary" type="button">
+                                    <i class="fas fa-search fa-sm"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="input-group">
+                            <input type="text" name="subclasificacion" class="form-control bg-light border-0 small" placeholder="Subclasificacion ..."
+                                aria-label="subclasificacion" aria-describedby="basic-addon2">
+                            <div class="input-group-append">
+                                <button class="btn btn-primary" type="button">
+                                    <i class="fas fa-search fa-sm"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" name="requerimiento" class="form-control form-control-user"
+                                id="exampleInputRequerimiento" placeholder="Ingrese el requerimiento del caso">
+                        </div>
+                        <div class="form-group">
+                            <input type="text" name="solucion" class="form-control form-control-user"
+                                id="exampleInputSolucion" placeholder="Ingrese la solucion del caso">
+                        </div>
+                        <a href="index.html" class="btn btn-primary btn-user btn-block">
+                            Crear caso
+                        </a>
+                        <hr>
+
+                    </form>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+    <!-- /.container-fluid -->
+    {% endblock%}
