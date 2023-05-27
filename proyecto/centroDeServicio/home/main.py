@@ -62,21 +62,79 @@ class ControlSoportes(Base):
     def __repr__(self):
         return f"ControlSoportes(codigo='{self.codigo}', Empleado='{self.empleadoSoporteR}')"
 
+def consultarCaso(session):
+    sql = select(ControlSoportes) \
+        .select_from(join(ControlSoportes, Empleados )) 
+    resultado = session.execute(sql).fetchone()
+    #resultado = session.scalars(sql)
+    return resultado
+
+def consultarUsuario(session): 
+    sql = text("SELECT NOMBRES||' '||PRIMERAPELLIDO||' '||SEGUNDOAPELLIDO FROM SPTEMPLEADOSOPORTES WHERE NUMERODOCUMENTO = 38")
+    resultado = session.execute(sql).fetchone()
+    return resultado
+
+def consultarCantidadCasos(session):
+    sql = text("SELECT COUNT(*) FROM SPTCONTROLSOPORTES") 
+    resultado = session.execute(sql).fetchone()
+    #resultado = session.scalars(sqlConteo)
+    return resultado
+
+def consultarCantidadCasosPropios(session):
+    sql = text("SELECT COUNT(*) FROM SPTCONTROLSOPORTES CS, SPTEMPLEADOSOPORTES E WHERE CS.SPTEMPLEADOSOPORTE = E.SECUENCIA AND E.NUMERODOCUMENTO = 38") 
+    resultado = session.execute(sql).fetchone()
+    #resultado = session.scalars(sqlConteo)
+    return resultado
+
+def consultarPorcentajeAvance(session):
+    sql = text("SELECT ROUND((((SUM(CS.TOTALTIEMPOENTERO)*60+SUM(CS.TOTALTIEMPOFRACCION))-MOD((SUM(CS.TOTALTIEMPOENTERO)*60+SUM(CS.TOTALTIEMPOFRACCION)),60))/60)/(240-32)*100,0) P FROM SPTCONTROLSOPORTES CS, SPTEMPLEADOSOPORTES E WHERE CS.SPTEMPLEADOSOPORTE = E.SECUENCIA AND E.NUMERODOCUMENTO = 38 AND CS.HORAINICIO BETWEEN TRUNC(SYSDATE,'MM') AND LAST_DAY(SYSDATE) ")
+    resultado = session.execute(sql).fetchone()
+    return resultado
+
+def consultarCasosPausados(session):
+    sql = text("SELECT COUNT(*) FROM SPTCONTROLSOPORTES CS, SPTEMPLEADOSOPORTES E WHERE CS.SPTEMPLEADOSOPORTE = E.SECUENCIA AND E.NUMERODOCUMENTO = 38 AND CS.ESTADO IN ('I', 'P') ")
+    resultado = session.execute(sql).fetchone()
+    return resultado
 
 @app.route("/")
 def index():
-    # Create a session to the database
+    #Session = sessionmaker(bind=engine)
+    #session = Session()
+    #controlSoporte_todos = consultarCaso(session)
+    #session.commit()
+    #print(controlSoporte_todos)
+
     Session = sessionmaker(bind=engine)
     session = Session()
-    # Query the user that has the e-mail address ed@google.com
-    sql = select(ControlSoportes) \
-        .select_from(join(ControlSoportes, Empleados )) 
-    controlSoporte_todos = session.execute(sql).fetchone()
-    print(controlSoporte_todos)
-    sqlConteo = text("SELECT COUNT(*) FROM SPTCONTROLSOPORTES") 
-    conteoCasos = session.execute(sqlConteo)
+    nombreUsuario = consultarUsuario(session)
+    session.commit()
+    print(nombreUsuario)
+
+    Session = sessionmaker(bind=engine)
+    session = Session()
+    conteoCasos = consultarCantidadCasos(session)
+    session.commit()
     print(conteoCasos)
-    return render_template('index.html',conteocasos=conteoCasos)
+    
+    Session = sessionmaker(bind=engine)
+    session = Session()
+    conteoCasosPropios = consultarCantidadCasosPropios(session)
+    session.commit()
+    print(conteoCasosPropios)
+
+    Session = sessionmaker(bind=engine)
+    session = Session()
+    porcentajeAvance = consultarPorcentajeAvance(session)
+    session.commit()
+    print(porcentajeAvance)
+
+    Session = sessionmaker(bind=engine)
+    session = Session()
+    casosPausados = consultarCasosPausados(session)
+    session.commit()
+    print(casosPausados)
+
+    return render_template('index.html',nombreusuario=nombreUsuario, conteocasos=conteoCasos, casospropios=conteoCasosPropios, porcentajeavance=porcentajeAvance, casospausados=casosPausados)
 
 
 if __name__ == "__main__":
